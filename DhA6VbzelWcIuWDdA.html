@@ -1,0 +1,230 @@
+<html><head><base href="https://sparrowai.apps/"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apps - Sparrow AI</title>
+<style>
+:root {
+  --bg-primary: #121212;
+  --bg-secondary: #1e1e1e;
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+  --accent: #6200ee;
+  --accent-hover: #7722ff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.header {
+  padding: 1.5rem;
+  background-color: var(--bg-secondary);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.search-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.search-bar {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.main-content {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.category {
+  margin-bottom: 3rem;
+}
+
+.category-title {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.app-card {
+  background-color: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 1rem;
+  transition: transform 0.2s;
+}
+
+.app-card:hover {
+  transform: translateY(-4px);
+}
+
+.app-image {
+  width: 100%;
+  height: 160px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+.app-title {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.app-description {
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.use-app-btn {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.use-app-btn:hover {
+  background-color: var(--accent-hover);
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 1rem;
+  }
+  
+  .apps-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="header">
+    <div class="logo">Apps - Sparrow AI</div>
+    <div class="search-container">
+      <input type="text" class="search-bar" placeholder="Search apps..." id="searchInput">
+    </div>
+  </header>
+
+  <main class="main-content">
+    <section class="category">
+      <h2 class="category-title">Productivity</h2>
+      <div class="apps-grid">
+        <div class="app-card">
+          <img src="productivity-app1.jpg" alt="Minimal task management interface with dark theme" class="app-image" width="280" height="160">
+          <h3 class="app-title">TaskMaster AI</h3>
+          <p class="app-description">Intelligent task management with AI-powered prioritization and scheduling suggestions.</p>
+          <a href="apps/taskmaster"><button class="use-app-btn">Use App</button></a>
+        </div>
+        <div class="app-card">
+          <img src="productivity-app2.jpg" alt="Calendar interface with smart scheduling features" class="app-image" width="280" height="160">
+          <h3 class="app-title">SmartSchedule</h3>
+          <p class="app-description">AI-powered calendar that learns your preferences and optimizes your daily schedule.</p>
+          <a href="apps/smartschedule"><button class="use-app-btn">Use App</button></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="category">
+      <h2 class="category-title">Content Creation</h2>
+      <div class="apps-grid">
+        <div class="app-card">
+          <img src="content-app1.jpg" alt="AI writing assistant interface" class="app-image" width="280" height="160">
+          <h3 class="app-title">WriteSmart</h3>
+          <p class="app-description">Advanced AI writing assistant for creating engaging content across various formats.</p>
+          <a href="apps/writesmart"><button class="use-app-btn">Use App</button></a>
+        </div>
+        <div class="app-card">
+          <img src="content-app2.jpg" alt="Image editing interface with AI tools" class="app-image" width="280" height="160">
+          <h3 class="app-title">PixelGenius</h3>
+          <p class="app-description">AI-powered image editing and generation tool for creating stunning visuals.</p>
+          <a href="apps/pixelgenius"><button class="use-app-btn">Use App</button></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="category">
+      <h2 class="category-title">Entertainment</h2>
+      <div class="apps-grid">
+        <div class="app-card">
+          <img src="entertainment-app1.jpg" alt="Music streaming interface with AI recommendations" class="app-image" width="280" height="160">
+          <h3 class="app-title">MoodPlay</h3>
+          <p class="app-description">Smart music player that creates personalized playlists based on your mood.</p>
+          <a href="apps/moodplay"><button class="use-app-btn">Use App</button></a>
+        </div>
+        <div class="app-card">
+          <img src="entertainment-app2.jpg" alt="Game interface with AI opponents" class="app-image" width="280" height="160">
+          <h3 class="app-title">GameMind</h3>
+          <p class="app-description">Collection of AI-powered games that adapt to your skill level.</p>
+          <a href="apps/gamemind"><button class="use-app-btn">Use App</button></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+<script>
+document.getElementById('searchInput').addEventListener('input', function(e) {
+  const searchTerm = e.target.value.toLowerCase();
+  const appCards = document.querySelectorAll('.app-card');
+  
+  appCards.forEach(card => {
+    const title = card.querySelector('.app-title').textContent.toLowerCase();
+    const description = card.querySelector('.app-description').textContent.toLowerCase();
+    
+    if (title.includes(searchTerm) || description.includes(searchTerm)) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+});
+
+// Add smooth scrolling for better UX
+document.querySelectorAll('a[href^="apps/"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const href = this.getAttribute('href');
+    // Add transition animation here
+    document.body.style.opacity = '0';
+    setTimeout(() => {
+      window.location.href = href;
+    }, 300);
+  });
+});
+</script>
+</body></html>
