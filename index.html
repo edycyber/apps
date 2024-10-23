@@ -130,6 +130,19 @@ body {
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   }
 }
+  .sign-out {
+            background-color: var(--secondary-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .sign-out:hover {
+            background-color: #02b39b;
+        }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -139,6 +152,7 @@ body {
     <div class="search-container">
       <input type="text" class="search-bar" placeholder="Search apps..." id="searchInput">
     </div>
+    <button class="sign-out" onclick="signOut()">List your app</button>
   </header>
 
   <main class="main-content">
@@ -198,6 +212,10 @@ body {
   </main>
 
 <script>
+ function signOut() {
+            window.location.href = 'https://aimovieclub.com/';
+        }
+  
 document.getElementById('searchInput').addEventListener('input', function(e) {
   const searchTerm = e.target.value.toLowerCase();
   const appCards = document.querySelectorAll('.app-card');
