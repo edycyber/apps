@@ -1,0 +1,210 @@
+<html><head><base href="https://wordlike.example.com/"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>WordLike Pro - Advanced Document Editor</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    height: 100%;
+  }
+  #app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  #toolbar {
+    background-color: #f3f3f3;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  #editor {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  #editor:focus {
+    outline: none;
+  }
+  button, select {
+    padding: 5px 10px;
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  button:hover, select:hover {
+    background-color: #3367d6;
+  }
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+  }
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+  }
+  .ql-toolbar {
+    background-color: #f3f3f3;
+  }
+</style>
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.3.0/docx.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+<body>
+<div id="app">
+  <div id="toolbar">
+    <select id="font-size">
+      <option value="small">Small</option>
+      <option value="normal" selected>Normal</option>
+      <option value="large">Large</option>
+      <option value="huge">Huge</option>
+    </select>
+    <select id="font-family">
+      <option value="Arial" selected>Arial</option>
+      <option value="Helvetica">Helvetica</option>
+      <option value="Times New Roman">Times New Roman</option>
+      <option value="Courier New">Courier New</option>
+    </select>
+    <button id="insertImage">Insert Image</button>
+    <button id="insertTable">Insert Table</button>
+    <button id="addFootnote">Add Footnote</button>
+    <button id="download">Download</button>
+  </div>
+  <div id="editor"></div>
+</div>
+
+<div id="downloadModal" class="modal">
+  <div class="modal-content">
+    <h2>Download File</h2>
+    <p>Choose a format:</p>
+    <button id="downloadTxt">Download as TXT</button>
+    <button id="downloadDocx">Download as DOCX</button>
+    <button id="cancelDownload">Cancel</button>
+  </div>
+</div>
+
+<script>
+let quill;
+
+function insertImage() {
+  const url = prompt('Enter the URL of the image:');
+  if (url) {
+    const range = quill.getSelection(true);
+    quill.insertEmbed(range.index, 'image', url, Quill.sources.USER);
+  }
+}
+
+function insertTable() {
+  const rows = prompt('Enter the number of rows:');
+  const cols = prompt('Enter the number of columns:');
+  if (rows && cols) {
+    const range = quill.getSelection(true);
+    let tableHTML = '<table><tbody>';
+    for (let i = 0; i < rows; i++) {
+      tableHTML += '<tr>';
+      for (let j = 0; j < cols; j++) {
+        tableHTML += '<td>Cell</td>';
+      }
+      tableHTML += '</tr>';
+    }
+    tableHTML += '</tbody></table>';
+    quill.clipboard.dangerouslyPasteHTML(range.index, tableHTML);
+  }
+}
+
+function addFootnote() {
+  const footnoteText = prompt('Enter the footnote text:');
+  if (footnoteText) {
+    const range = quill.getSelection(true);
+    const footnoteIndex = document.querySelectorAll('.footnote').length + 1;
+    quill.insertText(range.index, '[' + footnoteIndex + ']', 'super', 'footnote');
+    quill.insertText(quill.getLength() - 1, '\n[' + footnoteIndex + '] ' + footnoteText);
+  }
+}
+
+function downloadAsTxt() {
+  const text = quill.getText();
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  saveAs(blob, 'document.txt');
+}
+
+function downloadAsDocx() {
+  const doc = new docx.Document();
+  const content = quill.root.innerHTML;
+  const paragraphs = content.split('<p>').map(p => p.replace('</p>', '').trim()).filter(p => p);
+  
+  paragraphs.forEach(p => {
+    doc.addParagraph(new docx.Paragraph({ text: p }));
+  });
+
+  docx.Packer.toBlob(doc).then(blob => {
+    saveAs(blob, 'document.docx');
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  quill = new Quill('#editor', {
+    theme: 'snow',
+    modules: {
+      toolbar: [
+        [{ 'header': [1, 2, 3, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        ['blockquote', 'code-block'],
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        [{ 'script': 'sub'}, { 'script': 'super' }],
+        [{ 'indent': '-1'}, { 'indent': '+1' }],
+        [{ 'direction': 'rtl' }],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'align': [] }],
+        ['clean']
+      ]
+    }
+  });
+
+  document.getElementById('font-size').addEventListener('change', (e) => {
+    quill.format('size', e.target.value);
+  });
+
+  document.getElementById('font-family').addEventListener('change', (e) => {
+    quill.format('font', e.target.value);
+  });
+
+  document.getElementById('insertImage').addEventListener('click', insertImage);
+  document.getElementById('insertTable').addEventListener('click', insertTable);
+  document.getElementById('addFootnote').addEventListener('click', addFootnote);
+
+  document.getElementById('download').addEventListener('click', () => {
+    document.getElementById('downloadModal').style.display = 'block';
+  });
+
+  document.getElementById('downloadTxt').addEventListener('click', () => {
+    downloadAsTxt();
+    document.getElementById('downloadModal').style.display = 'none';
+  });
+
+  document.getElementById('downloadDocx').addEventListener('click', () => {
+    downloadAsDocx();
+    document.getElementById('downloadModal').style.display = 'none';
+  });
+
+  document.getElementById('cancelDownload').addEventListener('click', () => {
+    document.getElementById('downloadModal').style.display = 'none';
+  });
+});
+</script>
+</body></html>

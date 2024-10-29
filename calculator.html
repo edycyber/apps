@@ -1,0 +1,193 @@
+<html><head><base href="." /><base target="_blank" /><style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(45deg, #2c3e50, #3498db);
+}
+
+.calculator {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    width: 320px;
+}
+
+#display {
+    width: 100%;
+    height: 80px;
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    margin-bottom: 10px;
+    border-radius: 10px;
+    text-align: right;
+    padding: 20px;
+    font-size: 2em;
+    color: #333;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+button {
+    padding: 20px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1.2em;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.operator {
+    background: rgba(52, 152, 219, 0.3);
+}
+
+.equals {
+    background: rgba(46, 204, 113, 0.3);
+}
+
+.clear {
+    background: rgba(231, 76, 60, 0.3);
+}
+
+@keyframes buttonPress {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+
+.button-press {
+    animation: buttonPress 0.1s ease;
+}
+</style></head><body>
+<div class="calculator">
+    <input type="text" id="display" readonly>
+    <div class="buttons">
+        <button class="clear" onclick="clearDisplay()">C</button>
+        <button class="operator" onclick="appendOperator('/')">/</button>
+        <button class="operator" onclick="appendOperator('*')">×</button>
+        <button class="operator" onclick="deleteLast()">⌫</button>
+        
+        <button onclick="appendNumber('7')">7</button>
+        <button onclick="appendNumber('8')">8</button>
+        <button onclick="appendNumber('9')">9</button>
+        <button class="operator" onclick="appendOperator('-')">-</button>
+        
+        <button onclick="appendNumber('4')">4</button>
+        <button onclick="appendNumber('5')">5</button>
+        <button onclick="appendNumber('6')">6</button>
+        <button class="operator" onclick="appendOperator('+')">+</button>
+        
+        <button onclick="appendNumber('1')">1</button>
+        <button onclick="appendNumber('2')">2</button>
+        <button onclick="appendNumber('3')">3</button>
+        <button class="equals" onclick="calculate()">=</button>
+        
+        <button onclick="appendNumber('0')">0</button>
+        <button onclick="appendNumber('00')">00</button>
+        <button onclick="appendNumber('.')">.</button>
+        <button class="operator" onclick="calculatePercent()">%</button>
+    </div>
+</div>
+
+<script>
+const display = document.getElementById('display');
+let currentCalculation = '';
+
+function appendNumber(num) {
+    currentCalculation += num;
+    display.value = currentCalculation;
+    animateButton(event.target);
+}
+
+function appendOperator(operator) {
+    if (currentCalculation !== '' && !isOperator(currentCalculation.slice(-1))) {
+        currentCalculation += operator;
+        display.value = currentCalculation;
+    }
+    animateButton(event.target);
+}
+
+function clearDisplay() {
+    currentCalculation = '';
+    display.value = '';
+    animateButton(event.target);
+}
+
+function calculate() {
+    try {
+        currentCalculation = eval(currentCalculation).toString();
+        display.value = currentCalculation;
+    } catch (e) {
+        display.value = 'Error';
+        currentCalculation = '';
+    }
+    animateButton(event.target);
+}
+
+function calculatePercent() {
+    try {
+        currentCalculation = (eval(currentCalculation) / 100).toString();
+        display.value = currentCalculation;
+    } catch (e) {
+        display.value = 'Error';
+        currentCalculation = '';
+    }
+    animateButton(event.target);
+}
+
+function deleteLast() {
+    currentCalculation = currentCalculation.slice(0, -1);
+    display.value = currentCalculation;
+    animateButton(event.target);
+}
+
+function isOperator(char) {
+    return ['+', '-', '*', '/', '%'].includes(char);
+}
+
+function animateButton(button) {
+    button.classList.add('button-press');
+    setTimeout(() => {
+        button.classList.remove('button-press');
+    }, 100);
+}
+
+// Keyboard support
+document.addEventListener('keydown', (event) => {
+    const key = event.key;
+    
+    if (/[0-9.]/.test(key)) {
+        appendNumber(key);
+    } else if (['+', '-', '*', '/'].includes(key)) {
+        appendOperator(key);
+    } else if (key === 'Enter' || key === '=') {
+        calculate();
+    } else if (key === 'Escape') {
+        clearDisplay();
+    } else if (key === 'Backspace') {
+        deleteLast();
+    }
+});
+</script>
+</body></html>
