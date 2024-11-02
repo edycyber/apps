@@ -1,4 +1,10 @@
-<html><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>EduFlow - Online Learning Platform</title><style>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>EduFlow - Online Learning Platform</title>
+<style>
 :root {
   --primary: #6C63FF;
   --bg-dark: #121212;
@@ -43,25 +49,15 @@ body {
   color: var(--primary);
 }
 
-.nav-links {
-  display: flex;
-  gap: 2rem;
-}
-
 .nav-links a {
   color: var(--text-light);
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-.nav-links a:hover {
-  color: var(--primary);
-}
-
 .hero {
   padding: 8rem 2rem 4rem;
   text-align: center;
-  background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
 }
 
 .hero h1 {
@@ -86,58 +82,51 @@ body {
   border-radius: 10px;
   overflow: hidden;
   transition: transform 0.3s ease;
+  cursor: pointer;
 }
 
 .course-card:hover {
   transform: translateY(-5px);
 }
 
-.course-content {
-  padding: 1.5rem;
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1001;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
-.course-content h3 {
-  margin-bottom: 1rem;
+.modal-content {
+  position: relative;
+  margin: 5% auto;
+  width: 80%;
+  max-width: 800px;
 }
 
-.course-content p {
-  color: #999;
-  margin-bottom: 1rem;
+.modal iframe {
+  width: 100%;
+  height: 450px;
 }
 
-.btn {
-  display: inline-block;
-  padding: 0.8rem 1.5rem;
-  background-color: var(--primary);
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.5rem;
+  color: #fff;
+  cursor: pointer;
 }
 
-.btn:hover {
-  background-color: #5550DD;
-}
-
-@media (max-width: 768px) {
-  .nav-links {
-    display: none;
-  }
-  
-  .hero h1 {
-    font-size: 2rem;
-  }
-}
 </style>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <nav class="navbar">
     <div class="navbar-content">
       <div class="logo">Entertainment - Sparrow AI</div>
-      <div class="nav-links">
-        <a href="https://eduflow.com/courses">Courses</a>
-      </div>
     </div>
   </nav>
 
@@ -147,55 +136,56 @@ body {
   </section>
 
   <section class="courses">
-    <div class="course-card">
-      <iframe width="100%" height="200" src="https://www.youtube.com/embed/5k5tPooKFRY" title="Learn JavaScript - Full Course for Beginners" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div class="course-card" onclick="openModal('https://www.youtube.com/embed/5k5tPooKFRY')">
+      <iframe width="100%" height="200" src="https://www.youtube.com/embed/5k5tPooKFRY" title="Learn JavaScript - Full Course for Beginners" frameborder="0" allowfullscreen></iframe>
       <div class="course-content">
         <h3>The Farmer</h3>
         <p>La Fermière | Film Complet | Drame</p>
       </div>
     </div>
 
-    <div class="course-card">
-      <iframe width="100%" height="200" src="<iframe width="560" height="315" src="https://www.youtube.com/embed/qBczncM0ntk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>" title="Learn HTML - Full Course for Beginners" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div class="course-card" onclick="openModal('https://www.youtube.com/embed/qBczncM0ntk')">
+      <iframe width="100%" height="200" src="https://www.youtube.com/embed/qBczncM0ntk" title="Beauty And The Billionaire" frameborder="0" allowfullscreen></iframe>
       <div class="course-content">
         <h3>Beauty And The Billionaire</h3>
-        <p>Addison gets roped into traveling overseas with her brother and his picky billionaire boss. But clashing with the billionaire is no vacation, until he starts to have a change of heart.</p>
+        <p>Addison gets roped into traveling overseas...</p>
       </div>
     </div>
 
-    <div class="course-card">
-      <iframe width="100%" height="200" src="https://www.youtube.com/embed/_vWrAV85JbE" title="Learn CSS - Full Course for Beginners" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div class="course-card" onclick="openModal('https://www.youtube.com/embed/_vWrAV85JbE')">
+      <iframe width="100%" height="200" src="https://www.youtube.com/embed/_vWrAV85JbE" title="Princess of Thieves" frameborder="0" allowfullscreen></iframe>
       <div class="course-content">
-        <h3>Princess of Thieves </h3>
-        <p>After the enormous success of 1938's "The Adventures of Robin Hood", studios were hesitant to make Robin Hood films for fear of paling in comparison.</p>
+        <h3>Princess of Thieves</h3>
+        <p>After the enormous success of 1938's "The Adventures of Robin Hood"...</p>
       </div>
     </div>
   </section>
 
+  <!-- Modal Structure -->
+  <div id="videoModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <iframe id="modalVideo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+
   <script>
-    // Add smooth scrolling for all links
-    document.querySelectorAll('a[href^="https://"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        window.open(this.href, '_blank');
-      });
-    });
+    function openModal(videoUrl) {
+      document.getElementById("videoModal").style.display = "block";
+      document.getElementById("modalVideo").src = videoUrl;
+    }
 
-    // Add intersection observer for fade-in animation
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = 1;
-          entry.target.style.transform = 'translateY(0)';
-        }
-      });
-    });
+    function closeModal() {
+      document.getElementById("videoModal").style.display = "none";
+      document.getElementById("modalVideo").src = "";
+    }
 
-    document.querySelectorAll('.course-card').forEach((card) => {
-      card.style.opacity = 0;
-      card.style.transform = 'translateY(20px)';
-      card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-      observer.observe(card);
-    });
+    window.onclick = function(event) {
+      const modal = document.getElementById("videoModal");
+      if (event.target === modal) {
+        closeModal();
+      }
+    }
   </script>
-</body></html>
+</body>
+</html>
